@@ -1,0 +1,33 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+
+spring:
+
+  cloud:
+    gateway:
+      routes:
+        - id: espm
+          uri: https://www.espm.br
+          predicates:
+            - Path=/espm/**
+
+        - id: account
+          uri: http://account:8080
+          predicates:
+            - Path=/account/**,/price/**
+
+        - id: data
+          uri: http://data:8080
+          predicates:
+            - Path=/data/**
+
+        - id: auth
+          uri: http://auth:8080
+          predicates:
+            - Path=/auth/**
+
+logging:
+  level:
+    espm: ${LOGGING_LEVEL_ESPM:debug}

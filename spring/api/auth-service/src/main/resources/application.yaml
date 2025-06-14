@@ -1,0 +1,15 @@
+name: auth
+
+server:
+  port: 8080
+  error:
+    include-message: always
+
+store:
+  jwt:
+    secret-key: ${JWT_SECRET_KEY:default5SPMSecretKey}
+    issuer: ESPM
+
+logging:
+  level:
+    espm: ${LOGGING_LEVEL_ESPM:debug}

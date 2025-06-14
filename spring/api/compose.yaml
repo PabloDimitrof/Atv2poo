@@ -1,0 +1,52 @@
+name: store
+
+services:
+
+  gateway:
+    build:
+      context: ./gateway-service
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+
+  account:
+    build:
+      context: ./account-service
+      dockerfile: Dockerfile
+    hostname: account
+    environment:
+      DATABASE_HOST: db
+      DATABASE_USERNAME: store
+      DATABASE_PASSWORD: s3cret0
+    deploy:    
+      replicas: 1
+
+  data:
+    build:
+      context: ./data-service
+      dockerfile: Dockerfile
+    hostname: data
+    environment:
+      DATABASE_HOST: db
+      DATABASE_USERNAME: store
+      DATABASE_PASSWORD: s3cret0
+    deploy:    
+      replicas: 1
+
+  auth:
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile
+    hostname: auth
+    environment:
+      JWT_SECRET_KEY: 10695371fde67022c1ac279660cf72d837a8486aba91e1a8e0797273d2bf58da7be9fec241d90b938c52f696e34daf5dd0e9ce258b3cbcfd02fae2bac81729878afeba16e5cca2d9a213d759d1a278410f71659153c84326311f41b8631aecbc906ff00bb5cc824a17a347e7fb4e8074eab1eb5d919fad4efcd1b48da9c16ec36dda128d17aa43e53444c4afddb67da265f5e60475849f533d4b2335a5ffbba2faf1f0c9a64b3b7aec0835dd2c2c69e8eeefdea73d9492191175bf973c72055231c37a0950f91a6861ab5353746de107a78158729a5f9c07db8647303e15c95873af1d4677e6140ad04d7f6ec75fd453c5281d1402c049ccf4ecf8d25a717a53c16187197ffc6071324c7661268fbc1523ff7af08b807ef9476d29ed08f784e69bd89adec7d42b8c88bcaa13bbc3b2baea8ac771207dda94c5ab12e3036c987c965e73815c25dfcb03ef96abbb3d309be5d6ad686f3828cc660009ac602e23c1a33a52d1d21029d30848b24a27b94531106759f49126af4a151ac08ec492b1f33687c814f9319710e7f0158b5644cdd51b8b005fbdd8f0a308dc224bf82dcf4780568bca04bc042e7d9e637bfc2a4c88734ba4dad3cd2c9dc88e1aa1f3eee50d37788ee0a7f673fc1ed3d0971f21e543cd2bbbb9cd8b9fd5804813ec43096735ba56689478a58acc212d91a065814ab659d6cfd6892287058ba7573e5cb4f975
+
+  db:
+    image: postgres:latest
+    hostname: db
+    environment:
+      POSTGRES_USER: store
+      POSTGRES_PASSWORD: s3cret0
+      POSTGRES_DB: store
+    ports:
+      - 5432:5432 # apenas para inspecionar o DB, apenas em desenvolvimento.

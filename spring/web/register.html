@@ -1,0 +1,42 @@
+<html>
+
+    <body>
+        <p>ESPM Register</p>
+        <input type="text" id="name" placeholder="Name">
+        <input type="text" id="email" placeholder="Email">
+        <input type="text" id="password" placeholder="Password" autocomplete="false">
+        <input type="button" id="submit" value="Submit">
+        <div id="accounts"></div>
+    </body>
+
+    <script>
+        const server = 'http://localhost:8080';
+
+        const register = (name, email, password) => {
+            console.log('Registering user...');
+            fetch(`${server}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, email, password })
+                })
+                .then(response => console.log(response.status))
+                .catch(error => {
+                    console.error('Error registering user:', error);
+                });
+        };
+
+        document.getElementById('submit').addEventListener('click', () => {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            if (name && email && password) {
+                register(name, email, password);
+            } else {
+                alert('Please fill all fields.');
+            }
+        });
+
+    </script>    
+</html>

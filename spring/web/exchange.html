@@ -1,0 +1,44 @@
+<html>
+
+    <body>
+        <p>ESPM Store</p>
+        <input type="text" id="from" placeholder="From" value="BRL">
+        <input type="text" id="to" placeholder="To" value="USD">
+        <input type="button" id="submit" value="Submit">
+        <div id="cotacao"></div>
+    </body>
+
+    <script>
+        const server = 'http://localhost:8080';
+
+        const acquire = (from, to) => {
+            console.log('Acquiring data...');
+            fetch(`${server}/price/${from}/${to}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    const cotacaoDiv = document.getElementById('cotacao');
+                    cotacaoDiv.innerHTML = `
+                        <p>From: ${data.code}</p>
+                        <p>To: ${data.codein}</p>
+                        <p>High Price: ${data.high}</p>
+                        <p>Low Price: ${data.low}</p>
+                    `;
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        };
+
+        document.getElementById('submit').addEventListener('click', () => {
+            const from = document.getElementById('from').value;
+            const to = document.getElementById('to').value;
+            if (from && to) {
+                acquire(from, to);
+            } else {
+                alert('Please fill in both fields.');
+            }
+        });
+
+    </script>    
+</html>
