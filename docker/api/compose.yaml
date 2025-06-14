@@ -1,0 +1,13 @@
+name: espm-store
+
+services:
+
+  db:
+    image: postgres:17.0
+    environment:
+      POSTGRES_DB: store
+      POSTGRES_USER: store
+      POSTGRES_PASSWORD: store
+    ports:
+      - 5432:5432 
+    
