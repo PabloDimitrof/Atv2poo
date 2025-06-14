@@ -1,0 +1,26 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+
+spring:
+  application:
+    name: data
+  jackson:
+    default-property-inclusion: non_null
+  datasource:
+    url: jdbc:postgresql://${DATABASE_HOST}:5432/store
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    baseline-on-migrate: true
+    schemas: data
+  jpa:
+    properties:
+      hibernate:
+        default_schema: data
+
+logging:
+  level:
+    espm: ${LOGGING_LEVEL_ESPM:debug}
